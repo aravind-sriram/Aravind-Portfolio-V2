@@ -1,0 +1,19 @@
+---
+description: Freeze confirmed Works panel layout; animation hooks only unless user asks to change layout
+globs: src/components/Works/WorksPanel.jsx,src/components/Works/WorksPanel.module.css
+alwaysApply: false
+---
+
+# Works panel layout is frozen
+
+Do **not** modify layout, spacing, typography, copy, sidebar structure, stack CSS classes, or markup in `WorksPanel.jsx` / `WorksPanel.module.css` unless the user **explicitly** asks to change the layout.
+
+Allowed without that explicit request:
+
+- New or updated animation hooks under `src/components/Works/` (e.g. GSAP ScrollTrigger)
+- Using existing `data-*` attributes on panel nodes
+- `Works.module.css` panel shell (fixed `.curtain` height, inner overflow) and scroll spacer (`min-height` on `.worksSection`)
+- `WorksPanel.module.css` scroll behavior on `.main` only (sidebar stays fixed within the panel)
+- `Works.jsx` wiring for hooks
+
+When adding motion, at scroll progress **0** the UI must match the CSS stack layout (no inline styles left on cards). Grid/deal triggers must use `start: "top top"` or later—not `top bottom`.

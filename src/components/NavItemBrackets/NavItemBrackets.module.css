@@ -1,0 +1,44 @@
+/* Local hover frame only — never use for the fixed viewport page brackets. */
+.frame {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  display: block;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border-color: var(--color-text-primary);
+}
+
+.topLeft {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid var(--color-text-primary);
+  border-left: 1.5px solid var(--color-text-primary);
+}
+
+.topRight {
+  top: 0;
+  right: 0;
+  border-top: 1.5px solid var(--color-text-primary);
+  border-right: 1.5px solid var(--color-text-primary);
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1.5px solid var(--color-text-primary);
+  border-left: 1.5px solid var(--color-text-primary);
+}
+
+.bottomRight {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid var(--color-text-primary);
+  border-right: 1.5px solid var(--color-text-primary);
+}

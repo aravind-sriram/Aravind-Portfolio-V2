@@ -1,0 +1,983 @@
+/* Same box as the Works curtain; the scroller spans the viewport so the wheel works over the margins too. */
+.page {
+  --case-top: calc(var(--space-24) - 5px);
+  --case-x: 18px;
+  --case-bottom: 18px;
+
+  position: fixed;
+  inset: 0;
+  padding: var(--case-top) var(--case-x) var(--case-bottom);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  container-type: inline-size;
+  color: var(--color-white);
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+.panel {
+  composes: surfaceDark from "../FilmGrain/grain.module.css";
+  min-height: 100%;
+  --grain-bg: var(--color-bg-dark);
+}
+
+/* Paints the page colour everywhere outside the panel (hiding content scrolled past its edges);
+   the mask cuts the panel area out of the padding box. */
+.frame {
+  composes: surfacePage from "../FilmGrain/grain.module.css";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  padding: var(--case-top) var(--case-x) var(--case-bottom);
+  --grain-bg: var(--color-bg);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 max(16px, 2cqw) max(48px, 11.6cqw);
+  text-align: center;
+}
+
+.topBar {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 0;
+}
+
+.topLinks {
+  display: flex;
+  gap: 42px;
+}
+
+.topLink {
+  font-family: var(--font-orbiter);
+  font-size: 14px;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Padding gives the brackets room and a hoverable area; the negative margin keeps the link in place. */
+.topLinkFramed {
+  position: relative;
+  display: inline-block;
+  padding: 7px 16px;
+  margin: -7px -16px;
+}
+
+.topLinkFramed .topLinkBrackets {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.topLinkFramed .topLinkBrackets span {
+  border-color: var(--color-white);
+}
+
+.topLinkFramed:hover .topLinkBrackets,
+.topLinkFramed:focus-visible .topLinkBrackets {
+  opacity: 1;
+}
+
+.title {
+  margin: max(24px, 8cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(48px, 11cqw);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.summary {
+  margin: calc(16px - 1.5cqw) 0 0;
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+}
+
+.heroMedia,
+.mediaPlaceholder {
+  display: grid;
+  place-items: center;
+  background: var(--color-video-placeholder);
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+
+.heroMedia {
+  aspect-ratio: 16 / 9;
+}
+
+/* A whole screenshot shown inside the 16:9 hero slot, without cropping. */
+.heroShot {
+  position: relative;
+  background: none;
+}
+
+.heroShotImg {
+  object-fit: contain;
+}
+
+.heroShotCover {
+  object-fit: cover;
+}
+
+/* Website sections laid out like the design file: the home page down the left, two later sections
+   stacked on the right. The column ratio matches the images' so both columns end level. */
+.siteCollage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
+  align-items: start;
+  column-gap: max(16px, 4.6cqw);
+  padding: max(12px, 1.9cqw) max(12px, 3cqw);
+  background: #fff;
+}
+
+.siteCollageSide {
+  display: grid;
+  row-gap: max(10px, 2.4cqw);
+}
+
+/* Clips a `data-reveal-rise` block so it rises into view from inside its own box. */
+.revealMask {
+  overflow: hidden;
+}
+
+.revealFill {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+.section {
+  padding: max(56px, 10.5cqw) max(16px, 2cqw) 0;
+}
+
+.sectionLabel {
+  margin: 0;
+  font-family: var(--font-orbiter);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #b5b5b5;
+}
+
+.sectionTitle {
+  margin: max(12px, 1.7cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(20px, 1.95cqw);
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.sectionBody {
+  margin: max(12px, 1.7cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: 14px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: max(6px, 0.6cqw);
+  margin: max(8px, 1.1cqw) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tagMask {
+  display: flex;
+  overflow: hidden;
+}
+
+.tag {
+  display: block;
+  padding: max(2px, 0.2cqw) max(6px, 0.6cqw);
+  border: 1px dashed rgba(255, 255, 255, 0.45);
+  border-radius: max(3px, 0.35cqw);
+  font-family: var(--font-mono);
+  font-size: max(10px, 1.02cqw);
+  line-height: 1.2;
+  color: #bdbdbd;
+}
+
+.tags + .sectionBody {
+  margin-top: max(12px, 1.9cqw);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, var(--split-text, 60cqw)) minmax(0, 1fr);
+  align-items: start;
+  padding: max(72px, 13.4cqw) max(16px, 2cqw) 0;
+}
+
+.splitText .sectionTitle {
+  max-width: 55cqw;
+}
+
+.splitText > * + * {
+  margin-top: max(48px, 7cqw);
+}
+
+.splitMedia {
+  justify-self: center;
+  display: block;
+  width: min(100%, 32cqw);
+  height: auto;
+  margin-top: -0.4cqw;
+}
+
+.splitSketches {
+  --split-text: 53.5cqw;
+  padding-top: max(64px, 11.5cqw);
+}
+
+.splitSketches .tags {
+  max-width: 50cqw;
+}
+
+.sketchMedia {
+  justify-self: end;
+  display: block;
+  width: min(100%, 35.4cqw);
+  height: auto;
+  margin: -0.6cqw max(0px, 1.2cqw) 0 0;
+  /* The artwork sits on pure black; lighten lets the panel colour show through it. */
+  mix-blend-mode: lighten;
+}
+
+.sectionNear {
+  padding-top: max(40px, 6.3cqw);
+}
+
+.darkEnd {
+  padding-bottom: max(48px, 6.8cqw);
+}
+
+.light {
+  composes: surfaceWhite from "../FilmGrain/grain.module.css";
+  padding-bottom: max(48px, 6cqw);
+  --grain-bg: #fff;
+  color: var(--color-text-primary);
+}
+
+.light .sectionLabel {
+  color: #8f8f8f;
+}
+
+.sectionFar {
+  padding-top: max(60px, 11.7cqw);
+}
+
+.lightFlush {
+  padding-bottom: max(8px, 1.1cqw);
+}
+
+.collageMedia {
+  margin-top: max(36px, 7.7cqw);
+}
+
+.collageVideo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lesson {
+  position: relative;
+  margin-top: max(20px, 3.25cqw);
+  padding: max(10px, 1.3cqw) max(8px, 1cqw) max(10px, 1.25cqw);
+}
+
+.lessonTitle {
+  margin: 0;
+  font-family: var(--font-orbiter);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.53;
+}
+
+.lessonBody {
+  margin: max(6px, 0.86cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  color: #333;
+}
+
+/* Widths are fractions of the 4700-wide flow artboard the screens were laid out on. */
+.flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: max(28px, 3.6cqw);
+}
+
+.flowScreen,
+.flowArrow {
+  display: block;
+  flex: none;
+  overflow: hidden;
+}
+
+.flowScreen {
+  width: calc(var(--span) / 4700 * 100%);
+}
+
+.flowArrow {
+  width: calc(92 / 4700 * 100%);
+}
+
+/* Rows bleed past the section padding to the panel edges; four standard screens fit the content
+   width. Every screen shares one height, so taller exports come out narrower. */
+.marquee {
+  --marquee-pad: max(16px, 2cqw);
+  --marquee-gap: max(12px, 3.5cqw);
+  --marquee-per-view: 4;
+  --marquee-screen-w: calc(
+    (100cqw - 2 * var(--marquee-pad) - (var(--marquee-per-view) - 1) * var(--marquee-gap)) /
+      var(--marquee-per-view)
+  );
+
+  display: grid;
+  row-gap: max(24px, 5cqw);
+  margin: max(28px, 3.6cqw) calc(-1 * var(--marquee-pad)) 0;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  will-change: transform;
+}
+
+/* Trailing padding instead of flex gap keeps every copy of a row exactly the same width. */
+.marqueeItem {
+  box-sizing: content-box;
+  flex: none;
+  height: calc(var(--marquee-screen-w) * 1542 / 720);
+  padding-right: var(--marquee-gap);
+}
+
+.marqueeImage {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+
+.closingMedia {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: max(12px, 3.5cqw);
+  margin-top: max(48px, 11cqw);
+}
+
+/* The page ends at the cards, with the same gap below them as beside them. */
+.closingSection {
+  padding-bottom: max(16px, 2cqw);
+}
+
+.closingFrame {
+  border-radius: max(8px, 1.2cqw);
+}
+
+.closingSlot {
+  aspect-ratio: 236 / 192;
+  background: var(--color-video-placeholder);
+}
+
+.note {
+  margin: max(28px, 4.7cqw) auto 0;
+  font-family: var(--font-orbiter);
+  font-size: max(14px, 1.45cqw);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.noteMuted {
+  color: #b0b0b0;
+}
+
+.light .brackets > span {
+  border-color: #9a9a9a;
+}
+
+/* Equal columns sized to the widest card, so every label stays on one line. */
+.stats {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  width: max-content;
+  max-width: 100%;
+  gap: max(16px, 4.4cqw);
+  margin: max(20px, 2.8cqw) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.statMask {
+  display: flex;
+  overflow: hidden;
+}
+
+.stat {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: max(120px, 13.6cqw);
+  height: max(96px, 10.8cqw);
+  padding: max(2px, 0.3cqw);
+}
+
+.statCard {
+  flex: 1;
+  padding: max(14px, 2cqw) max(12px, 1.8cqw) 0;
+  background: #f4f4f4;
+}
+
+.statValue {
+  display: block;
+  font-family: var(--font-orbiter);
+  font-size: max(24px, 3.2cqw);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.statLabel {
+  display: block;
+  margin-top: max(8px, 1.3cqw);
+  font-family: var(--font-orbiter);
+  font-size: max(11px, 1.4cqw);
+  line-height: 1.3;
+  color: #b5b5b5;
+  white-space: nowrap;
+}
+
+.learningsTitle {
+  margin: max(20px, 3.4cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(22px, 2.5cqw);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.learnings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: max(16px, 2.8cqw);
+  margin: max(28px, 6.3cqw) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.learning {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: max(6px, 0.6cqw) max(12px, 1.5cqw) 0;
+}
+
+.learningTitle {
+  margin: 0;
+  font-family: var(--font-orbiter);
+  font-size: max(15px, 1.5cqw);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.learningBody {
+  margin: auto 0 0;
+  padding-top: max(4px, 0.2cqw);
+  font-family: var(--font-orbiter);
+  font-size: max(12px, 1.05cqw);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #333;
+}
+
+/* The artwork carries its own empty margin, so the negative bottom margin keeps the drawing's
+   spacing to the next section. */
+.impactMedia {
+  display: block;
+  width: 97cqw;
+  margin: max(36px, 8.2cqw) calc(50% - 48.5cqw) -4cqw;
+}
+
+.breakdown {
+  display: grid;
+  grid-template-columns: 27.9cqw minmax(0, 1fr);
+}
+
+.breakdownIntro {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1cqw;
+}
+
+.breakdownTitle {
+  max-width: 23cqw;
+  margin: max(12px, 1.5cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(22px, 2.2cqw);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.breakdownBody {
+  max-width: 23cqw;
+  margin: max(12px, 1.8cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(14px, 1.45cqw);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+}
+
+.breakdownStep {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: max(28px, 3.1cqw);
+  height: max(30px, 3.4cqw);
+  margin-top: auto;
+  font-family: var(--font-orbiter);
+  font-size: max(16px, 1.8cqw);
+  color: #9a9a9a;
+}
+
+.breakdownPin {
+  position: sticky;
+}
+
+.breakdownStepMask {
+  display: block;
+  height: 1.2em;
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.breakdownStepReel {
+  display: block;
+  transform: translateY(calc(var(--step, 0) * -1.2em));
+}
+
+.breakdownStepReel > span {
+  display: block;
+  text-align: center;
+}
+
+.breakdownFrame {
+  --row-gap: 3cqw;
+
+  position: relative;
+  height: max(320px, 42cqw);
+  padding: 0.9cqw 1.2cqw;
+}
+
+.breakdownViewport {
+  height: 100%;
+  overflow: hidden;
+}
+
+.breakdownTrack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  height: 100%;
+  transform: translateY(calc(var(--step, 0) * (-100% - var(--row-gap))));
+  will-change: transform;
+}
+
+.breakdownRow {
+  display: grid;
+  flex: none;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: 3cqw;
+  height: 100%;
+}
+
+.breakdownDivider {
+  border-left: 1px dashed #555;
+}
+
+.breakdownCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: max(14px, 2cqw) max(14px, 1.9cqw);
+  border-radius: max(6px, 0.8cqw);
+  background: #f5f5f5;
+}
+
+.breakdownCardTitle {
+  margin: 0;
+  font-family: var(--font-orbiter);
+  font-size: max(15px, 1.5cqw);
+  font-weight: 700;
+  line-height: 1.22;
+}
+
+.breakdownCardBody {
+  margin: max(8px, 1.1cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(12px, 1.1cqw);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: #b5b5b5;
+}
+
+.breakdownMedia {
+  display: flex;
+  gap: 1.4cqw;
+  margin-top: auto;
+}
+
+.breakdownScreen {
+  --screen-w: 11.5cqw;
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  width: var(--screen-w);
+  aspect-ratio: 115 / 214;
+  background: var(--color-video-placeholder);
+  font-family: var(--font-mono);
+  font-size: max(9px, 0.7cqw);
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.breakdownScreenShot {
+  background: none;
+}
+
+/* Same height as a standard screen, widened to the image's own `--ratio` (width / height). */
+.breakdownScreen[data-wide] {
+  width: calc(var(--screen-w) * 214 / 115 * var(--ratio));
+  aspect-ratio: var(--ratio);
+}
+
+.breakdownShot {
+  object-fit: contain;
+}
+
+.sectionBodyPlain {
+  letter-spacing: 0.015em;
+}
+
+.sectionBodyPlain + .sectionBodyPlain {
+  margin-top: max(10px, 1.4cqw);
+}
+
+.sectionBodyWide {
+  letter-spacing: 0.075em;
+}
+
+.brackets {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.brackets > span {
+  position: absolute;
+  width: max(7px, 0.85cqw);
+  height: max(7px, 0.85cqw);
+  border: 0 dotted rgba(255, 255, 255, 0.55);
+}
+
+.brackets > .bracketTopLeft {
+  top: 0;
+  left: 0;
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.brackets > .bracketTopRight {
+  top: 0;
+  right: 0;
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.brackets > .bracketBottomLeft {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.brackets > .bracketBottomRight {
+  right: 0;
+  bottom: 0;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.problems {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: max(16px, 3.3cqw);
+  margin: max(24px, 2.7cqw) 0 max(4px, 0.7cqw);
+  padding: 0;
+  list-style: none;
+}
+
+.problemsPin {
+  position: sticky;
+}
+
+.problem {
+  position: relative;
+  display: flex;
+  padding: max(4px, 0.6cqw);
+  will-change: transform;
+}
+
+.problemCard {
+  flex: 1;
+  padding: max(16px, 2.2cqw) max(14px, 2cqw) max(16px, 1.9cqw);
+  border-radius: max(3px, 0.35cqw);
+  background: #f4f4f4;
+  color: #171717;
+}
+
+.problemNumber {
+  display: block;
+  font-family: var(--font-orbiter);
+  font-size: max(32px, 4.4cqw);
+  font-weight: 400;
+  line-height: 1;
+  color: #b5b5b5;
+}
+
+.problemTitle {
+  margin: max(12px, 1.75cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(15px, 1.45cqw);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.problemBody {
+  margin: max(8px, 1.2cqw) 0 0;
+  font-family: var(--font-orbiter);
+  font-size: max(12px, 1.05cqw);
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  color: #333;
+}
+
+.callout {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: max(40px, 4.06cqw);
+  margin-top: max(28px, 3.6cqw);
+  padding: max(8px, 0.6cqw) max(16px, 2cqw);
+  font-family: var(--font-orbiter);
+  font-size: max(13px, 1.3cqw);
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.callout p {
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: max(8px, 1.9cqw);
+  margin: max(12px, 1.7cqw) 0 max(4px, 0.8cqw);
+}
+
+.metaMask {
+  display: flex;
+  overflow: hidden;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  height: max(28px, 3.9cqw);
+  padding: 0 max(8px, 1.35cqw);
+  border: 1px dotted rgba(255, 255, 255, 0.45);
+  font-family: var(--font-orbiter);
+  font-size: 16px;
+}
+
+.metaItem dt {
+  color: #b5b5b5;
+}
+
+.metaItem dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.noticed {
+  position: relative;
+  display: flex;
+  margin-top: max(16px, 2cqw);
+  padding: max(3px, 0.55cqw);
+}
+
+.noticedCard {
+  flex: 1;
+  padding: max(12px, 1.95cqw) max(12px, 2cqw) max(12px, 1.85cqw);
+  background: #f4f4f4;
+  color: #171717;
+}
+
+.noticedTitle {
+  margin: 0;
+  font-family: var(--font-orbiter);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.noticedRows {
+  display: flex;
+  flex-direction: column;
+  gap: max(5px, 0.71cqw);
+  margin-top: max(8px, 1.1cqw);
+}
+
+.noticedTags {
+  margin: 0;
+  gap: max(5px, 0.7cqw);
+}
+
+.noticedTags .tag {
+  border-color: #cfcfcf;
+  color: #b0b0b0;
+}
+
+@container (max-width: 760px) {
+  .problems {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .marquee {
+    --marquee-per-view: 2;
+  }
+
+  .closingMedia {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .siteCollage {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: max(10px, 2.4cqw);
+  }
+
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 48px;
+  }
+
+  .splitMedia {
+    width: min(100%, 360px);
+    margin-top: 0;
+  }
+
+  .sketchMedia {
+    justify-self: stretch;
+    width: 100%;
+    margin: 0;
+  }
+
+  .learnings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .learning {
+    padding-bottom: 8px;
+  }
+
+  .breakdown {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+  }
+
+  .breakdownTitle,
+  .breakdownBody {
+    max-width: none;
+  }
+
+  .breakdownStep {
+    margin-top: 24px;
+  }
+
+  .breakdownFrame {
+    --row-gap: 24px;
+
+    height: max(560px, 150cqw);
+    padding: 12px;
+  }
+
+  .breakdownRow {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+    row-gap: 16px;
+  }
+
+  .breakdownDivider {
+    border-top: 1px dashed #555;
+    border-left: 0;
+  }
+
+  .breakdownScreen {
+    --screen-w: 30cqw;
+  }
+
+  .breakdownMedia {
+    margin-top: 24px;
+  }
+}
+
+/* The artwork is faint outline art on solid white; inverting and brightening it, then blending
+   with lighten, drops the white so only bright lines show on the dark panel. */
+.sectionMedia {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin-top: max(24px, 4.5cqw);
+  aspect-ratio: 780 / 306;
+  object-fit: cover;
+  filter: invert(1) brightness(4);
+  mix-blend-mode: lighten;
+}

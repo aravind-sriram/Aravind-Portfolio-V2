@@ -1,0 +1,55 @@
+.wordMask {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.wordInner {
+  display: inline-block;
+}
+
+.wordMuted {
+  color: var(--color-works-muted);
+}
+
+.lineMask {
+  display: block;
+  overflow: hidden;
+}
+
+.titleLineMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.bodyLineMask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.28em;
+  margin-bottom: -0.28em;
+}
+
+.lineInner {
+  display: block;
+}
+
+.titleWordMask,
+.bodyWordMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-inline: 0.06em;
+  margin-inline: -0.06em;
+}
+
+.titleWordMask {
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.bodyWordMask {
+  padding-bottom: 0.28em;
+  margin-bottom: -0.28em;
+}

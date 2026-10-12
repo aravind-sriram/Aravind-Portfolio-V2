@@ -1,0 +1,85 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  visibility: hidden;
+  will-change: transform, width, height;
+}
+
+.cursor[data-visible] {
+  visibility: visible;
+}
+
+.cursor[data-mode="pill"] {
+  background: #171717;
+  mix-blend-mode: normal;
+}
+
+.text {
+  display: none;
+  flex-shrink: 0;
+  font-family: var(--font-orbiter);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.cursor[data-mode="pill"] .text {
+  display: block;
+}
+
+.cursor[data-marquee] {
+  justify-content: flex-start;
+}
+
+.cursor[data-mode="pill"][data-marquee] .text {
+  display: flex;
+  animation: marquee linear infinite;
+}
+
+.cursor[data-mode="pill"][data-marquee]::before,
+.cursor[data-mode="pill"][data-marquee]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 36px;
+  background: #171717;
+  backdrop-filter: blur(2px);
+}
+
+.cursor[data-mode="pill"][data-marquee]::before {
+  left: 0;
+  mask-image: linear-gradient(90deg, #000, transparent);
+}
+
+.cursor[data-mode="pill"][data-marquee]::after {
+  right: 0;
+  mask-image: linear-gradient(270deg, #000, transparent);
+}
+
+/* One step = one of the MARQUEE_COPIES (3) label copies in CustomCursor.jsx. */
+@keyframes marquee {
+  to {
+    transform: translateX(calc(-100% / 3));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor[data-mode="pill"][data-marquee] .text {
+    animation: none;
+  }
+}

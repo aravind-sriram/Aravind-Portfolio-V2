@@ -1,0 +1,45 @@
+.loader {
+  composes: surfaceDark from "../FilmGrain/grain.module.css";
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  --grain-bg: var(--color-bg-dark);
+  color: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.mask {
+  display: block;
+  overflow: hidden;
+}
+
+.mask > span {
+  display: block;
+}
+
+.count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.words {
+  position: absolute;
+  right: 48px;
+  bottom: 56px;
+  left: 48px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.words > :first-child {
+  justify-self: start;
+}
+
+.words > :last-child {
+  justify-self: end;
+}

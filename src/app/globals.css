@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400;500;600;700;800&family=Roboto+Mono:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  --color-bg: #f0f0ec;
+  --color-text-primary: #171717;
+  --color-bg-dark: #171717;
+  --color-card-dark: #272727;
+  --color-works-panel: #303030;
+  --color-works-muted: #acacac;
+  --color-works-text: #f5f5f5;
+  --color-white: #ffffff;
+  --color-video-placeholder: #d8d8d3;
+
+  --font-orbiter: "TASA Orbiter", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+
+  --page-margin-y: var(--space-12);
+  --page-margin-x: var(--space-12);
+  --bracket-inset-x: var(--page-margin-x);
+  --bracket-inset-y: var(--page-margin-y);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Set by GrainHush; registered so the page grain eases in and out instead of snapping. */
+@property --page-hush {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+html {
+  height: 100%;
+  transition: --page-hush 0.3s linear;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+img {
+  max-width: 100%;
+  object-fit: cover;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Set by CustomCursor on mouse-driven devices. */
+.custom-cursor,
+.custom-cursor * {
+  cursor: none !important;
+}

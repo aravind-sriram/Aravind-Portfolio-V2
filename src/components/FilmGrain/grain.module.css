@@ -1,0 +1,147 @@
+/* Old-TV texture painted into a surface's own background, so content drawn on top stays clean.
+   Layers, top to bottom: a fine grain tile overlaid on everything below; a 90% veil of the
+   surface colour; an interference reel (vertical streaks, tearing, bars, moire, cloudy washes)
+   pinned to the viewport and stretched to fill it, so every surface shows the same frame and the
+   veil lets 5% of it through (1% on white boxes, 10% on the page background; see variants).
+   Compose into background surfaces only and give them their colour with `--grain-bg`, not
+   `background`/`background-color`. The reel is stored opaque: baking its strength into the alpha
+   makes the encoder merge frames and smear the edges. */
+@property --grain-veil {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 95%;
+}
+
+.surface {
+  background-color: var(--grain-bg);
+  background-image:
+    url("/images/grain/static.png"),
+    linear-gradient(
+      color-mix(in srgb, var(--grain-bg) var(--grain-veil), transparent),
+      color-mix(in srgb, var(--grain-bg) var(--grain-veil), transparent)
+    ),
+    url("/images/grain/tv-static.webp");
+  background-size: 461px 461px, auto, 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-attachment: scroll, scroll, fixed;
+  background-blend-mode: overlay, normal, normal;
+  animation: flicker 0.5s steps(1) infinite;
+}
+
+/* White boxes show the reel faintest (1%). */
+.surfaceWhite {
+  composes: surface;
+  --grain-veil: 99%;
+}
+
+/* Same reel with its luminance inverted, so dark surfaces keep their near-black instead of being
+   lifted to grey; interference reads as faint light lines. */
+.surfaceDark {
+  composes: surface;
+  background-image:
+    url("/images/grain/static.png"),
+    linear-gradient(
+      color-mix(in srgb, var(--grain-bg) var(--grain-veil), transparent),
+      color-mix(in srgb, var(--grain-bg) var(--grain-veil), transparent)
+    ),
+    url("/images/grain/tv-static-dark.webp");
+}
+
+/* The page background around the boxes: reel at 10%, plus a hush veil over every layer that
+   thickens while white boxes fill the viewport (`--page-hush`, 0-1, set by GrainHush). */
+@property --grain-hush {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+.surfacePage {
+  composes: surface;
+  --grain-veil: 90%;
+  --grain-hush: calc(var(--page-hush, 0) * 85%);
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--grain-bg) var(--grain-hush), transparent),
+      color-mix(in srgb, var(--grain-bg) var(--grain-hush), transparent)
+    ),
+    url("/images/grain/static.png"),
+    linear-gradient(
+      color-mix(in srgb, var(--grain-bg) var(--grain-veil), transparent),
+      color-mix(in srgb, var(--grain-bg) var(--grain-veil), transparent)
+    ),
+    url("/images/grain/tv-static.webp");
+  background-size: auto, 461px 461px, auto, 100% 100%;
+  background-repeat: no-repeat, repeat, no-repeat, no-repeat;
+  background-attachment: scroll, scroll, scroll, fixed;
+  background-blend-mode: normal, overlay, normal, normal;
+  animation-name: flickerPage;
+}
+
+/* Six jumps per 0.5s: the tile lands somewhere new 12 times a second. */
+@keyframes flicker {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  16.66% {
+    background-position: -173px 91px, 0 0, 0 0;
+  }
+  33.33% {
+    background-position: 59px -211px, 0 0, 0 0;
+  }
+  50% {
+    background-position: -287px -43px, 0 0, 0 0;
+  }
+  66.66% {
+    background-position: 131px 197px, 0 0, 0 0;
+  }
+  83.33% {
+    background-position: -67px -149px, 0 0, 0 0;
+  }
+}
+
+@keyframes flickerPage {
+  0% {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+  16.66% {
+    background-position: 0 0, -173px 91px, 0 0, 0 0;
+  }
+  33.33% {
+    background-position: 0 0, 59px -211px, 0 0, 0 0;
+  }
+  50% {
+    background-position: 0 0, -287px -43px, 0 0, 0 0;
+  }
+  66.66% {
+    background-position: 0 0, 131px 197px, 0 0, 0 0;
+  }
+  83.33% {
+    background-position: 0 0, -67px -149px, 0 0, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .surface,
+  .surfaceWhite,
+  .surfaceDark {
+    background-image: url("/images/grain/static.png");
+    background-size: 461px 461px;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-blend-mode: overlay;
+    animation: none;
+  }
+
+  .surfacePage {
+    background-image:
+      linear-gradient(
+        color-mix(in srgb, var(--grain-bg) var(--grain-hush), transparent),
+        color-mix(in srgb, var(--grain-bg) var(--grain-hush), transparent)
+      ),
+      url("/images/grain/static.png");
+    background-size: auto, 461px 461px;
+    background-repeat: no-repeat, repeat;
+    background-attachment: scroll, scroll;
+    background-blend-mode: normal, overlay;
+  }
+}

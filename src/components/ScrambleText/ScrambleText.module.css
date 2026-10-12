@@ -1,0 +1,15 @@
+.fixed {
+  position: relative;
+  display: inline-block;
+}
+
+.sizer {
+  visibility: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+}

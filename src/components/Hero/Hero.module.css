@@ -1,0 +1,416 @@
+.heroScroll {
+  position: relative;
+  height: 280vh;
+  width: 100%;
+}
+
+/* The pin transforms the stage, which makes it the containing block of the
+   fixed nav and video. Transforming it up front keeps them placed against the
+   stage before the script runs too. */
+.heroStage {
+  position: relative;
+  height: 100dvh;
+  width: 100%;
+  overflow: visible;
+  transform: translate(0, 0);
+}
+
+/* Mirrors the scroll animation's first frame (useHeroScrollAnimation), so the
+   video is already in place before the script takes over. */
+.heroVideo {
+  /* The zone between the nav and the title (getVideoZone), in stage coordinates. */
+  --title-size: clamp(36px, (100vw - 36px) * 0.1, 128px);
+  --zone-top: calc(var(--space-24) - var(--space-4) - 9px + 30px + 12px);
+  --zone-bottom: calc(100vh - 16px - var(--title-size) - 12px);
+  --fit-h: min(
+    675px,
+    var(--zone-bottom) - var(--zone-top),
+    (100vw - 2 * var(--bracket-inset-x)) * 9 / 16
+  );
+  /* 10px off each side of the fitted 16:9 box (VIDEO_START_TRIM). */
+  --start-h: calc(var(--fit-h) - 10px);
+  --start-w: calc(var(--fit-h) * 16 / 9 - 10px);
+  position: fixed;
+  z-index: 20;
+  left: calc(
+    min(
+        max(50vw - 19px, var(--bracket-inset-x) + var(--start-w) / 2),
+        100vw - var(--bracket-inset-x) - var(--start-w) / 2
+      ) -
+      var(--start-w) / 2
+  );
+  top: calc((var(--zone-top) + var(--zone-bottom)) / 2 - var(--start-h) / 2);
+  width: var(--start-w);
+  height: var(--start-h);
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--color-video-placeholder);
+  pointer-events: none;
+  will-change: transform, width, height, left, top;
+}
+
+.heroVideoMedia {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav {
+  position: fixed;
+  top: calc(var(--space-24) - var(--space-4) - 9px);
+  left: var(--space-24);
+  right: var(--space-24);
+  z-index: 100;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.letterI {
+  position: relative;
+  display: inline-block;
+}
+
+.nav .navContainer {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.navGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  gap: var(--space-8);
+}
+
+.navCell {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.navCell[data-align="start"] {
+  justify-self: start;
+}
+
+.navCell[data-align="center"] {
+  justify-self: center;
+}
+
+.navCell[data-align="end"] {
+  justify-self: end;
+}
+
+.navItemHit {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.navItemHit:hover .navItemBrackets {
+  opacity: 1;
+}
+
+.navItemHit:hover .socialIcons {
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+  max-width: var(--space-80);
+}
+
+.navItemCore {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: var(--space-8) var(--space-16);
+}
+
+.navItemBrackets {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.navButton {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.socialIcons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  max-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(var(--space-24));
+  overflow: hidden;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    max-width 0.35s ease,
+    visibility 0.35s ease;
+}
+
+.socialIcons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.aboutHit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  transform: translateX(-2px);
+}
+
+.aboutHoverCore {
+  width: 87px;
+  height: 30px;
+  padding: 0;
+}
+
+.aboutAvatar {
+  position: absolute;
+  left: calc(100% + var(--space-12));
+  top: 50%;
+  width: 28px;
+  height: 25px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(calc(-1 * var(--space-16)), -50%);
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.4s ease;
+  overflow: hidden;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.aboutAvatarImg {
+  display: block;
+  width: 28px;
+  height: 25px;
+  max-width: none;
+  object-fit: cover;
+}
+
+.aboutHit:hover .aboutAvatar {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -50%);
+  pointer-events: auto;
+}
+
+.getInTouchHit {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  transform: translateX(3px);
+}
+
+.getInTouchAnchor {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.getInTouchSocialTrack {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: content-box;
+  /* Padding, not margin, so the gap to the button stays hoverable. */
+  padding: var(--space-8) var(--space-12) var(--space-8) 0;
+  width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.getInTouchIconLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  padding: var(--space-4);
+  line-height: 0;
+  opacity: 0;
+  transform: translateX(var(--space-16));
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.getInTouchIconImg {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+}
+
+.myWorksHit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navHoverCore {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.myWorksHit .navHoverCore {
+  width: 149px;
+  height: 30px;
+}
+
+.getInTouchHoverCore {
+  width: 146px;
+  height: 30px;
+  padding: 0;
+}
+
+.navHoverBrackets {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.navHoverButton {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 28px;
+  height: 28px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  transition: font-weight 0.15s ease;
+}
+
+.navHoverButtonStart {
+  text-align: center;
+}
+
+.navHoverButtonCenter {
+  text-align: center;
+}
+
+.navHoverButtonEnd {
+  text-align: right;
+}
+
+.aboutHit:hover .navHoverButton,
+.myWorksHit:hover .navHoverButton,
+.getInTouchHit:hover .navHoverButton {
+  font-weight: 500;
+}
+
+.aboutHit:hover .navHoverBrackets,
+.myWorksHit:hover .navHoverBrackets,
+.getInTouchHit:hover .navHoverBrackets {
+  opacity: 1;
+}
+
+.getInTouchHit:hover .getInTouchSocialTrack {
+  width: 96px;
+  pointer-events: auto;
+}
+
+.getInTouchHit:hover .getInTouchIconLink:nth-child(1) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0ms;
+}
+
+.getInTouchHit:hover .getInTouchIconLink:nth-child(2) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 70ms;
+}
+
+.getInTouchHit:hover .getInTouchIconLink:nth-child(3) {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 140ms;
+}
+
+.getInTouchHit:not(:hover) .getInTouchIconLink {
+  transition-delay: 0ms;
+}
+
+.titleWrap {
+  position: absolute;
+  left: calc(18px - var(--bracket-inset-x));
+  right: calc(18px - var(--bracket-inset-x));
+  bottom: calc(var(--space-8) + var(--space-12) - 4px);
+  width: auto;
+  max-width: none;
+  box-sizing: border-box;
+  pointer-events: none;
+  overflow: visible;
+  container-type: inline-size;
+  text-align: center;
+  will-change: transform;
+  z-index: 10;
+}
+
+.displayTitle {
+  margin: 0;
+  font-family: var(--font-orbiter);
+  font-weight: 800;
+  font-size: clamp(36px, 10cqi, 128px);
+  line-height: 1;
+  /* 12px at the 128px cap, scaling down with the font so the name always fits. */
+  letter-spacing: 0.09375em;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-inline: var(--space-4);
+  overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .navGrid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .navHoverButton {
+    font-size: clamp(11px, 2.8vw, 14px);
+  }
+}

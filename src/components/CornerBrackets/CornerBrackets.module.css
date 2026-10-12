@@ -1,0 +1,85 @@
+.wrapper {
+  pointer-events: none;
+}
+
+.wrapperLight {
+  --bracket-color: #171717;
+}
+
+.wrapperDark {
+  --bracket-color: rgba(255, 255, 255, 0.2);
+}
+
+.fixedViewport {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.corner {
+  position: absolute;
+  display: block;
+  width: 24px;
+  height: 24px;
+  box-sizing: border-box;
+}
+
+.compact .corner {
+  width: 10px;
+  height: 10px;
+}
+
+.cornerFixed {
+  position: fixed;
+}
+
+.topLeft {
+  top: 0;
+  left: 0;
+  border-top: 1.5px solid var(--bracket-color);
+  border-left: 1.5px solid var(--bracket-color);
+}
+
+.topRight {
+  top: 0;
+  right: 0;
+  border-top: 1.5px solid var(--bracket-color);
+  border-right: 1.5px solid var(--bracket-color);
+}
+
+.bottomLeft {
+  bottom: 0;
+  left: 0;
+  border-bottom: 1.5px solid var(--bracket-color);
+  border-left: 1.5px solid var(--bracket-color);
+}
+
+.bottomRight {
+  bottom: 0;
+  right: 0;
+  border-bottom: 1.5px solid var(--bracket-color);
+  border-right: 1.5px solid var(--bracket-color);
+}
+
+.topLeft.cornerFixed {
+  top: var(--bracket-inset-y);
+  left: var(--bracket-inset-x);
+}
+
+.topRight.cornerFixed {
+  top: var(--bracket-inset-y);
+  right: var(--bracket-inset-x);
+}
+
+.bottomLeft.cornerFixed {
+  bottom: var(--bracket-inset-y);
+  left: var(--bracket-inset-x);
+}
+
+.bottomRight.cornerFixed {
+  bottom: var(--bracket-inset-y);
+  right: var(--bracket-inset-x);
+}

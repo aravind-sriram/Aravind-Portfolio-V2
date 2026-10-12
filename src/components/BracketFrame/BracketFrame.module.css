@@ -1,0 +1,14 @@
+/* All page content must stay inside the fixed corner brackets. Use this wrapper only.
+   Only the textured page background runs out past the brackets, through this padding. */
+.frame {
+  composes: surfacePage from "../FilmGrain/grain.module.css";
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: var(--bracket-inset-y) var(--bracket-inset-x);
+  --grain-bg: var(--color-bg);
+  overflow-x: hidden;
+  overflow-y: visible;
+}
