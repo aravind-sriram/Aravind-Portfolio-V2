@@ -454,7 +454,7 @@ function measureTopRowSettle({
   cards.forEach((card) => {
     gsap.set(card, {
       clearProps:
-        "left,top,width,height,rotation,scale,transform,zIndex,position",
+        "left,top,width,height,rotation,scale,transform,transformOrigin,zIndex,position",
     });
   });
   resetStageRestLayout(stage);
@@ -890,7 +890,7 @@ export default function useWorksProjectGridScroll({ sectionRef }) {
         cards.forEach((card) => {
           gsap.set(card, {
             clearProps:
-              "left,top,width,height,rotation,scale,transform,zIndex,position",
+              "left,top,width,height,rotation,scale,transform,transformOrigin,zIndex,position",
           });
           card.style.removeProperty("--meta-height");
         });
@@ -902,7 +902,7 @@ export default function useWorksProjectGridScroll({ sectionRef }) {
         cards.forEach((card) => {
           gsap.set(card, {
             clearProps:
-              "left,top,width,height,rotation,scale,transform,zIndex,position",
+              "left,top,width,height,rotation,scale,transform,transformOrigin,zIndex,position",
           });
           card.style.removeProperty("--meta-height");
         });

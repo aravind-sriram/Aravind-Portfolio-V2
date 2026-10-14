@@ -69,7 +69,13 @@ export default function Testimonials({ items }) {
                     <Corners className={styles.testimonialAvatarCorners} />
                     <div className={styles.testimonialAvatarFill}>
                       {item.avatar ? (
-                        <Image src={item.avatar} alt="" fill sizes="40px" />
+                        <Image
+                          src={item.avatar}
+                          alt=""
+                          fill
+                          sizes="40px"
+                          data-fit={item.avatarFit}
+                        />
                       ) : null}
                     </div>
                   </div>

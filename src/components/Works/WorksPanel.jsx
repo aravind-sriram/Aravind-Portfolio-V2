@@ -21,13 +21,15 @@ const TESTIMONIALS = [
   {
     name: "Dr. Harshavardhini",
     role: "Head of Physiotherapy Team",
-    avatar: "/images/testimonials/harshavardhini.jpg",
+    avatar: "/images/testimonials/harshavardhini-full.jpg",
     quote:
       "Aravind is a proactive and logical thinker with a passion for creating exceptional user experience. He always integrates thorough user research into his design process, ensuring that every solution in a deep understanding of user behaviour and preferences. As a problem solver, he consistently delivers innovative and effective solutions that address complex user needs, resulting in user centric designs.",
   },
   {
     name: "Jag Mohan",
     role: "Firmware Engineer",
+    avatar: "/images/testimonials/jag-mohan.jpg",
+    avatarFit: "cover",
     quote:
       "Aravind has a remarkable ability to transform complex data and requirements into visually appealing designs that elevate user experience. His talent ensures that our interfaces are engaging and intuitive, turning what could have been mundane spreadsheets into user-friendly experiences.",
   },
@@ -41,6 +43,7 @@ const TESTIMONIALS = [
   {
     name: "Vyankatesh",
     role: "Full Stack Developer",
+    avatar: "/images/testimonials/vyankatesh.jpg",
     quote:
       "I am working with Aravind for a year on various projects. He consistently delivers top-notch designs for our web and Android apps, focusing on providing the best user experience. He does user research with patients and designs products based on their needs. His designs are easy to use and understand, making them very helpful for our users.",
   },
@@ -568,6 +571,17 @@ async function copyEmail() {
   }
 }
 
+const RESUME_URL = "/resume/aravind-sriram-resume.pdf";
+
+function downloadResume() {
+  const link = document.createElement("a");
+  link.href = RESUME_URL;
+  link.download = "Aravind Sriram Resume.pdf";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
 function SidebarBody({ activeNav, onNavigate, reveal = false, light = false }) {
   const mark = reveal ? { "data-reveal-nav": true } : undefined;
   const iconStyle = light ? "glyph" : "mono";
@@ -666,7 +680,6 @@ function SidebarBody({ activeNav, onNavigate, reveal = false, light = false }) {
             type="button"
             className={styles.iconButton}
             aria-label={copied ? "Email copied" : "Copy email"}
-            data-cursor-label={copied ? "Copied" : "Copy"}
             tabIndex={reveal ? undefined : -1}
             onClick={reveal ? handleCopy : undefined}
           >
@@ -697,6 +710,7 @@ function SidebarBody({ activeNav, onNavigate, reveal = false, light = false }) {
             className={styles.iconButton}
             aria-label="Download resume"
             tabIndex={reveal ? undefined : -1}
+            onClick={reveal ? downloadResume : undefined}
           >
             <Image src="/images/works/928df.svg" alt="" width={16} height={16} />
           </button>

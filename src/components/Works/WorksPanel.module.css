@@ -1382,9 +1382,14 @@
   background: #cfcfcf;
 }
 
+/* Photos are shown whole unless their testimonial asks to fill the square. */
 .testimonialAvatarFill img {
-  object-fit: cover;
+  object-fit: contain;
   filter: grayscale(1);
+}
+
+.testimonialAvatarFill img[data-fit="cover"] {
+  object-fit: cover;
 }
 
 .testimonialName {
