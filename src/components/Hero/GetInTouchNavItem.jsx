@@ -7,7 +7,13 @@ import ScrambleText from "@/components/ScrambleText/ScrambleText";
 import styles from "./Hero.module.css";
 
 const SOCIAL_LINKS = [
-  { href: "#", label: "Gmail", src: "/icons/gmail.svg", width: 18, height: 16 },
+  {
+    href: "mailto:aravindsriram8@gmail.com",
+    label: "Gmail",
+    src: "/icons/gmail.svg",
+    width: 18,
+    height: 16,
+  },
   {
     href: "https://wa.me/919629371457",
     label: "WhatsApp",
