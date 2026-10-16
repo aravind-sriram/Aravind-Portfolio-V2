@@ -196,7 +196,8 @@ const SOLUTIONS = [
 
 export const metadata = {
   title: "Pheezee — Aravind Sriram",
-  description: "Drove 65% test completion within the constraints of an existing UI.",
+  description:
+    "Grew task completion by 23% and new users by 16%, within the constraints of an existing UI.",
 };
 
 export default function PheezeeCaseStudy() {
@@ -204,7 +205,7 @@ export default function PheezeeCaseStudy() {
     <CaseStudyShell>
       <CaseStudyHero
         title="Pheezee"
-        summary="Drove 65% test completion within the constraints of an existing UI."
+        summary="Grew task completion by 23% and new users by 16%, within the constraints of an existing UI."
       />
       <div className={styles.revealMask} data-reveal-group>
         <div className={`${styles.heroMedia} ${styles.heroShot}`} data-reveal-rise="0">
